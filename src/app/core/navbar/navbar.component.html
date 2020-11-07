@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span id="appName">CryptoTracker</span>
+    <span class="example-spacer"></span>
+
+    <button *ngIf="showReload" id="reloadButton" mat-icon-button (click)="reload()">
+      <mat-icon class="example-icon">replay</mat-icon>
+    </button>
+
+    <button id="settingsButton" mat-icon-button (click)="goToSettings()">
+      <mat-icon class="example-icon">settings</mat-icon>
+    </button>
+
+  </mat-toolbar-row>
+</mat-toolbar>

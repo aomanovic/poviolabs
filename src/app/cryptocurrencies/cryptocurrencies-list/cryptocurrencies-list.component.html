@@ -1,0 +1,33 @@
+<mat-table id="cryptocurrenciesTable" *ngIf="cryptocurrencies$ | async as cryptocurrencies" class="lessons-table mat-elevation-z8" [dataSource]="cryptocurrencies">
+
+  <ng-container matColumnDef="rank">
+    <mat-header-cell *matHeaderCellDef>Rank</mat-header-cell>
+    <mat-cell *matCellDef="let item">{{item.cmc_rank}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="symbol">
+    <mat-header-cell *matHeaderCellDef>Symbol</mat-header-cell>
+    <mat-cell class="symbol-cell"
+              *matCellDef="let item">{{item.symbol}}</mat-cell>
+
+  </ng-container>
+
+  <ng-container *ngIf="selectedFiatCurrency$ | async as selectedFiatCurrency">
+  <ng-container matColumnDef="price" >
+    <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+    <mat-cell class="price-cell"
+              *matCellDef="let item">{{item.quote[selectedFiatCurrency]?.price}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="change">
+    <mat-header-cell *matHeaderCellDef>24h Change</mat-header-cell>
+    <mat-cell class="change-cell"
+              *matCellDef="let item">{{item.quote[selectedFiatCurrency]?.percent_change_24h}}</mat-cell>
+  </ng-container>
+
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+  <mat-row *matRowDef="let row; columns: displayedColumns" (click)="rowClicked(row)"></mat-row>
+
+</mat-table>

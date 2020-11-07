@@ -1,0 +1,48 @@
+<div class="details">
+  <h1>Cryptocurrency Details</h1>
+  <div *ngIf="cryptocurrency$ | async as cryptocurrency">
+    {{cryptocurrency.name}}
+    <ul *ngIf="selectedFiatCurrency$ | async as selectedFiatCurrency">
+      <li>
+        Rank: {{cryptocurrency.cmc_rank}}
+      </li>
+
+      <li>
+        Name: {{cryptocurrency.name}}
+      </li>
+
+      <li>
+        Symbol: {{cryptocurrency.symbol}}
+      </li>
+
+      <li>
+        <span>Price {{selectedFiatCurrency}}: {{cryptocurrency.quote[selectedFiatCurrency]?.price}}</span>
+      </li>
+
+      <li>
+        Price in Bitcoin: {{cryptocurrency.quote['BTC'].price}}
+      </li>
+
+      <li>
+        1h change: {{cryptocurrency.quote[selectedFiatCurrency]?.percent_change_1h}}
+      </li>
+
+      <li>
+        24h change: {{cryptocurrency.quote[selectedFiatCurrency]?.percent_change_24h}}
+      </li>
+
+      <li>
+        7d change: {{cryptocurrency.quote[selectedFiatCurrency]?.percent_change_7d}}
+      </li>
+      <li>
+        Total supply: {{cryptocurrency.total_supply}}
+      </li>
+      <li>
+        Max supply: {{cryptocurrency.max_supply}}
+      </li>
+      <li>
+        Circulating supply: {{cryptocurrency.circulating_supply}}
+      </li>
+    </ul>
+  </div>
+</div>

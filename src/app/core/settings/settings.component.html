@@ -1,0 +1,12 @@
+<div class="container">
+  <h1 id="settingsHeader">Settings</h1>
+  <span>{{selectedFiat}}</span>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon class="example-icon">keyboard_arrow_down</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button *ngFor="let item of menuItems" mat-menu-item (click)="selectMenuItem(item)">{{item}}</button>
+  </mat-menu>
+</div>
