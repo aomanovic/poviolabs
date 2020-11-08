@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {ICryptocurrency} from '../models/cryptocurrency';
 import {ICryptocurrencyDetailsResponse, ICryptocurrencyResponse} from '../models/cryptocurrency-response';
 
@@ -16,8 +16,8 @@ export class CryptocurrenciesService {
   }
 
   getAll(convert = 'USD'): Observable<ICryptocurrency[]> {
-    return this.http.get<ICryptocurrencyResponse>(this.baseUrl + '/cryptocurrency/listings/latest?convert=BTC,' + convert,
-      this.getRequestOptions(convert))
+    return this.http.get<ICryptocurrencyResponse>(this.baseUrl + '/cryptocurrency/listings/latest',
+      this.getRequestOptions(convert, null))
       .pipe(
         map(response => {
           return response.data;
@@ -28,8 +28,8 @@ export class CryptocurrenciesService {
 
   getDetails(convert: string, currency: string): Observable<ICryptocurrency> {
     return this.http.get<ICryptocurrencyDetailsResponse>(
-      this.baseUrl + '/cryptocurrency/quotes/latest?convert=BTC,' + convert + '&symbol=' + currency,
-      this.getRequestOptions(convert))
+      this.baseUrl + '/cryptocurrency/quotes/latest',
+      this.getRequestOptions(convert, currency))
       .pipe(
         map(response => {
           return response.data[currency];
@@ -39,8 +39,10 @@ export class CryptocurrenciesService {
   }
 
   // tslint:disable-next-line:ban-types
-  private getRequestOptions(currency: string): Object {
+  private getRequestOptions(currency: string, symbol: string): Object {
     return {
+      params: !symbol ? new HttpParams().set('convert', 'BTC,' + currency) :
+        new HttpParams().set('convert', 'BTC,' + currency).set('symbol', symbol),
       qs: {
         start: '1',
         limit: '100',

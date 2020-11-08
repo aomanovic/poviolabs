@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
-import {ActivatedRoute, NavigationEnd, Router, RouterState} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {GetCryptocurrencyDetails, LoadCryptocurrencies} from '../../store/actions/cryptocurrency.actions';
 import {filter, map, mergeMap} from 'rxjs/operators';
+import {CryptocurrencyState} from '../../store/states/cryptocurrencies.state';
 
 @Component({
   selector: 'app-navbar',
@@ -41,14 +42,8 @@ export class NavbarComponent implements OnInit {
   }
 
   reload(): void {
-    this.store.select(RouterState).subscribe((value) => {
-      if (value && value.state && value.state.symbol) {
-        const symbol = value.state.params.symbol;
-        this.store.dispatch([new GetCryptocurrencyDetails(symbol)]);
-      } else {
-        this.store.dispatch([new LoadCryptocurrencies()]);
-      }
-      console.log('Reloaded data from API');
-    });
+    const selectedSymbol = this.store.selectSnapshot(CryptocurrencyState.getSelectedSymbol);
+    this.store.dispatch([new LoadCryptocurrencies(), new GetCryptocurrencyDetails(selectedSymbol)]);
+    console.log('Reloaded data from API');
   }
 }
